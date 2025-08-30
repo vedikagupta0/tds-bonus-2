@@ -1,0 +1,198 @@
+/* Modern dark theme with vibrant colors
+   - user: purple/pink gradient, right-aligned
+   - assistant: cyan/blue gradient, left-aligned
+*/
+
+:root {
+  --radius: 16px;
+  --bubble-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+  --bg-dark: #1a1b26;
+  --bg-darker: #16171f;
+}
+
+.chat-surface[data-bs-theme="light"] {
+  background: var(--bg-dark);
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  color: #e2e8f0; /* Light text color for better visibility */
+}
+
+/* Card header and footer text */
+.chat-surface .card-header,
+.chat-surface .card-footer {
+  color: #e2e8f0;
+}
+
+/* Tips text color */
+.chat-surface .form-text {
+  color: #94a3b8 !important; /* Light gray, important to override Bootstrap */
+}
+
+/* Code snippets in tips */
+.chat-surface .form-text code {
+  color: #60a5fa; /* Light blue for code elements */
+  background: rgba(59, 130, 246, 0.1);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.chat-scroll {
+  min-height: 44vh;
+  max-height: 62vh;
+  overflow: auto;
+  background: var(--bg-darker);
+  padding: .75rem .5rem;
+  border-top: 1px solid rgba(255,255,255,.05);
+}
+
+/* Base message row */
+.message {
+  margin: 1.2rem 0;
+  display: flex;
+  align-items: flex-end;
+  gap: .75rem;
+  position: relative;
+}
+
+.message .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 40px;
+  font-size: 20px;
+  color: #fff;
+  box-shadow: var(--bubble-shadow);
+  transition: transform 0.2s ease;
+}
+
+.message .avatar:hover {
+  transform: scale(1.05);
+}
+
+/* Message label */
+.message::before {
+  position: absolute;
+  top: -1.2rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Bubble base */
+.message .bubble {
+  max-width: min(860px, 88%);
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: var(--bubble-shadow);
+  line-height: 1.5;
+  word-wrap: break-word;
+  transition: transform 0.2s ease;
+}
+
+.message .bubble:hover {
+  transform: translateY(-2px);
+}
+
+/* Assistant (LEFT) */
+.message.assistant { justify-content: flex-start; }
+.message.assistant::before {
+  left: 52px;
+  color: #64dfdf;
+  content: "Assistant";
+}
+.message.assistant .avatar {
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+}
+.message.assistant .bubble {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1));
+  color: #e2e8f0;
+  border-top-left-radius: 6px;
+  border: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+/* User (RIGHT) */
+.message.user { justify-content: flex-end; }
+.message.user::before {
+  right: 52px;
+  color: #c084fc;
+  content: "You";
+}
+.message.user .avatar {
+  background: linear-gradient(135deg, #8b5cf6, #d946ef);
+}
+.message.user .bubble {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(217, 70, 239, 0.1));
+  color: #e2e8f0;
+  border-top-right-radius: 6px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+/* Hidden roles (kept for completeness if you ever show them) */
+.message.system .bubble {
+  background: rgba(255, 243, 205, 0.1);
+  border-color: rgba(255, 230, 156, 0.2);
+  color: #ffd700;
+  font-style: italic;
+}
+
+.message.tool .bubble {
+  background: rgba(248, 249, 250, 0.05);
+  border-color: rgba(233, 236, 239, 0.1);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre-wrap;
+  color: #a8b3cf;
+}
+
+/* Code output card */
+#codeCard { 
+  margin-bottom: 1rem;
+  background: var(--bg-darker);
+  border: 1px solid rgba(255,255,255,.1);
+}
+
+#codeCard pre {
+  margin: 0;
+  padding: 1rem;
+  background: #0b1220;
+  color: #d6e7ff;
+  border-radius: 0;
+}
+
+/* Inputs */
+textarea#userInput { 
+  resize: none;
+  background: var(--bg-darker);
+  color: #ffffff;
+  border-color: rgba(255,255,255,.2);
+  font-size: 1rem;
+  padding: 0.75rem;
+}
+
+/* Input group styling */
+.input-group-text {
+  background: var(--bg-darker) !important;
+  border-color: rgba(255,255,255,.2) !important;
+  color: #94a3b8 !important;
+}
+
+textarea#userInput:focus {
+  background: var(--bg-darker);
+  color: #ffffff;
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(139, 92, 246, 0.25);
+}
+
+/* Placeholder color */
+textarea#userInput::placeholder {
+  color: #94a3b8;
+  opacity: 0.8;
+}
+
+/* Small screens */
+@media (max-width: 576px) {
+  .message .bubble { max-width: 84%; }
+}
