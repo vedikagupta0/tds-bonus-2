@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LLM Agent POC — Browser Multi-Tool</title>
+
+  <!-- Bootstrap CSS + Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-body">
+  <nav class="navbar navbar-expand-lg border-bottom">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-semibold" href="#"><i class="bi bi-robot"></i> LLM Agent POC</a>
+      <div class="d-flex align-items-center gap-3 ms-auto">
+        <div id="status" class="small text-secondary d-none">
+          <span class="spinner-border spinner-border-sm align-text-top me-2"></span>
+          Thinking…
+        </div>
+        <div class="form-check form-switch m-0">
+          <input class="form-check-input" type="checkbox" id="themeToggle" checked />
+          <label class="form-check-label small" for="themeToggle" title="Toggle dark/light page theme">
+            <i class="bi bi-moon-stars"></i>
+          </label>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-3">
+    <div id="alerts" class="mb-2"></div>
+
+    <!-- Provider & Keys -->
+    <div class="card mb-3 shadow-sm">
+      <div class="card-header fw-semibold"><i class="bi bi-gear"></i> Provider & Settings</div>
+      <div class="card-body row g-2 align-items-end">
+        <div class="col-12 col-md-3">
+          <label class="form-label">Provider</label>
+          <select id="provider" class="form-select">
+            <option value="openai">OpenAI</option>
+            <option value="aipipe">AI Pipe (OpenRouter-style)</option>
+            <option value="anthropic">Anthropic Claude</option>
+            <option value="gemini">Google Gemini</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-4">
+          <label class="form-label">API Key / Token</label>
+          <input id="apiKey" type="password" class="form-control" placeholder="sk-... or AI Pipe token" />
+        </div>
+        <div class="col-12 col-md-4">
+          <label class="form-label">Model</label>
+          <select id="model" class="form-select"></select>
+        </div>
+        <div class="col-12 col-md-1">
+          <label class="form-label">Max tokens</label>
+          <input id="maxTokens" type="number" class="form-control" value="800" />
+        </div>
+
+        <div class="col-12 mt-2">
+          <details>
+            <summary class="small text-secondary">Google Search (CSE) — optional</summary>
+            <div class="row g-2 mt-1">
+              <div class="col-12 col-md-6">
+                <label class="form-label">Google API Key</label>
+                <input id="googleKey" type="password" class="form-control" placeholder="AIza..." />
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label">CSE CX</label>
+                <input id="googleCx" type="text" class="form-control" placeholder="custom-search-engine-id" />
+              </div>
+            </div>
+            <div class="form-text">If not set, <code>web_search</code> falls back to DuckDuckGo + Wikipedia (no key needed).</div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat (LIGHT card) -->
+    <div class="card mb-3 shadow-lg chat-surface" id="chatCard" data-bs-theme="light">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span class="fw-semibold"><i class="bi bi-chat-dots"></i> Conversation</span>
+        <div class="d-flex gap-2">
+          <button id="clear" class="btn btn-sm btn-outline-secondary"><i class="bi bi-trash"></i> Clear</button>
+          <button id="export" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> Export JSON</button>
+        </div>
+      </div>
+      <div id="chat" class="card-body chat-scroll"></div>
+      <div class="card-footer">
+        <div class="input-group">
+          <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-person-fill"></i></span>
+          <textarea id="userInput" class="form-control border-start-0" rows="1" placeholder="Type a message..."></textarea>
+          <button id="send" class="btn btn-primary">
+            <i class="bi bi-send-fill"></i> Send
+          </button>
+        </div>
+        <div class="form-text">
+          Tips: Ask it to research something; it may call <code>web_search</code>. Ask it to run code; it may call <code>js_exec</code>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Code output (from js_exec) -->
+    <div class="card d-none shadow-sm" id="codeCard">
+      <div class="card-header fw-semibold"><i class="bi bi-terminal"></i> Code Output</div>
+      <pre class="m-0"><code id="codeOutput"></code></pre>
+    </div>
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="agent.js"></script>
+</body>
+</html>
